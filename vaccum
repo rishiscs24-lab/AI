@@ -1,0 +1,20 @@
+rooms = {"A": "Dirty", "B": "Dirty"}
+location = "A"
+
+while "Dirty" in rooms.values():
+    print("Location:", location)
+    print("Rooms:", rooms)
+
+    if rooms[location] == "Dirty":
+        print("Action: SUCK")
+        rooms[location] = "Clean"
+
+    elif location == "A":
+        print("Action: RIGHT")
+        location = "B"
+
+    else:
+        print("Action: LEFT")
+        location = "A"
+
+print("Goal achieved! Both rooms are clean.")
