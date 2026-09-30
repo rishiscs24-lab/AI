@@ -1,0 +1,90 @@
+def depth_limited(state, goal, depth, path):
+    if state == goal:
+        return path
+
+    if depth == 0:
+        return None
+
+    zero = state.index(0)
+    row = zero // 3
+    col = zero % 3
+
+    moves = []
+
+    if row > 0:
+        moves.append(zero - 3)
+    if row < 2:
+        moves.append(zero + 3)
+    if col > 0:
+        moves.append(zero - 1)
+    if col < 2:
+        moves.append(zero + 1)
+
+    for move in moves:
+        new_state = list(state)
+        new_state[zero], new_state[move] = new_state[move], new_state[zero]
+        new_state = tuple(new_state)
+
+        if new_state not in path:
+            result = depth_limited(
+                new_state,
+                goal,
+                depth - 1,
+                path + [new_state]
+            )
+
+            if result:
+                return result
+
+    return None
+
+
+def ids(start, goal):
+    depth = 0
+
+    while True:
+        result = depth_limited(start, goal, depth, [start])
+
+        if result:
+            return result
+
+        depth += 1
+
+
+start = (1, 2, 3,
+         4, 6, 0,
+         7, 5, 8)
+
+goal = (1, 2, 3,
+        4, 5, 6,
+        7, 8, 0)
+
+solution = ids(start, goal)
+
+print("IDS Solution:")
+
+for state in solution:
+    print(state[0:3])
+    print(state[3:6])
+    print(state[6:9])
+    print()
+
+
+
+
+IDS Solution:
+(1, 2, 3)
+(4, 6, 0)
+(7, 5, 8)
+
+(1, 2, 3)
+(4, 0, 6)
+(7, 5, 8)
+
+(1, 2, 3)
+(4, 5, 6)
+(7, 0, 8)
+
+(1, 2, 3)
+(4, 5, 6)
+(7, 8, 0)
