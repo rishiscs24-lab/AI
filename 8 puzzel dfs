@@ -1,0 +1,48 @@
+def dfs(start, goal):
+    stack = [(start, [])]
+    visited = {start}
+
+    while stack:
+        state, path = stack.pop()
+
+        if state == goal:
+            return path
+
+        blank = state.index(0)
+        row, col = divmod(blank, 3)
+
+        moves = []
+
+        if row > 0:
+            moves.append(blank - 3)
+        if row < 2:
+            moves.append(blank + 3)
+        if col > 0:
+            moves.append(blank - 1)
+        if col < 2:
+            moves.append(blank + 1)
+
+        for new_blank in moves:
+            new_state = list(state)
+            new_state[blank], new_state[new_blank] = new_state[new_blank], new_state[blank]
+            new_state = tuple(new_state)
+
+            if new_state not in visited:
+                visited.add(new_state)
+                stack.append((new_state, path + [new_state]))
+
+    return None
+
+
+start = tuple(map(int, input("Enter initial state (use 0 for blank): ").split()))
+goal = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+
+solution = dfs(start, goal)
+
+if solution:
+    print("Solution found:")
+    print(start)
+    for state in solution:
+        print(state)
+else:
+    print("No solution")
